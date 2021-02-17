@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Projeto 8</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+
+
+    <nav class="navbar navbar-expand-md navbar-light fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Cadastro de Clientes</a>
+      <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Cadastro de clientes <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Clientes</a>
+          </li>
+
+        </ul>
+
+
+      </div>
+      </div>
+    </nav>
+
+
+<div class="box-fix">
+    <section class="bg-top">
+      <div class="overlay"></div>
+      <div class="container fix-zindex">
+          <div class="row" style="display: flex;">
+
+            <form class="cliente col-md-6" style=" margin-top :50px;color:#fff;">
+              <div class="col-md-12">
+                    <div class="form-group"><label>CPF:</label>
+                      <input type="text" class="cpf form-control" name="cpf">
+                    </div>
+                      
+                    <div class="form-group"><label>NOME:</label> 
+                      <input type="text" class="form-control" name="nome">
+                    </div>
+                      
+                    <div class="form-group"><label>E-MAIL:</label> 
+                      <input type="text" class="form-control" name="email">
+                    </div>
+                      
+                    <div class="form-group"><label>TELEFONE:</label> 
+                      <input type="text" class="form-control" name="telefone">
+                    </div>
+              </div>
+            </form>
+            <p class="msg"></p>
+            <form class="endereco col-md-6" style=" margin-top :50px;color:#fff;">
+              <div class="col-md-12">
+
+                  <label>TIPO:</label> 
+                    <input type="text" class="form-control" name="tipo">
+                  
+                    
+                  <label>LOUGADOURO:</label> 
+                    <input type="text" class="form-control" name="logadouro">
+                  
+                    
+                  <label>NÚMERO:</label> 
+                    <input type="text" class="form-control" name="numero">
+                  
+                    
+                  <label>COMPLEMENTO:</label> 
+                    <input type="text" class="form-control" name="complemento">
+                  
+                    
+                  <label>BAIRRO:</label> 
+                    <input type="text" class="form-control" name="bairro">
+                  
+                    
+                  <label>CIDADE:</label> 
+                    <input type="text" class="form-control" name="cidade">
+                  
+                    
+                  <label>ESTADO:</label> 
+                    <input type="text" class="form-control" name="estado">
+                  
+                   <a class="btn" style="cursor:pointer;background:#3FA3C5;color: white;" type="submit" class="btn btn-default">CADASTRAR</a>
+                  <br><br><br><br>
+                  </div>
+
+              </form>
+
+             </div>
+
+          </div>
+      </div>
+    </section>
+
+    <footer style="background:#444;padding:8px 0;" class="text-center">
+      <p style="margin: 0;">Todos os direitos reservados</p>
+    </footer>
+
+
+    </div><!--box-fix-->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function () { 
+        var $seuCampoCpf = $(".cpf");
+        $seuCampoCpf.mask('000.000.000-00', {reverse: true});
+
+
+        $(".btn").on("click",function(){
+          var data;
+            var clientesData = $(".cliente");
+            var enderecoData = $(".endereco");
+
+            var cliente = {};
+            var enderecos = {};
+    
+            clientesData.find(":input").not("[type='submit']").not("[type='reset']").each(function(){
+                var thisInput = $(this);
+                cliente[thisInput.attr("name")] = thisInput.val();
+            });
+
+            enderecoData.find(":input").not("[type='submit']").not("[type='reset']").each(function(){
+                var thisInput = $(this);
+                enderecos[thisInput.attr("name") ] = thisInput.val() ;
+            });
+
+             cliente.enderecos = [enderecos];
+            data = JSON.stringify(cliente);
+     
+            $.ajax({
+              url: 'http://localhost:5002/v1/clientes',
+              type: 'post',
+              crossDomain: true,
+              dataType: 'json',
+              contentType: 'application/json',
+              success: function (data) {
+                  $(".msg").html(data);
+              },
+              data: JSON.stringify(cliente)
+          }); 
+        });
+    });
+
+
+      function send() {
+
+         
+      }
+
+
+  </script>
+  </body>
+</html>
